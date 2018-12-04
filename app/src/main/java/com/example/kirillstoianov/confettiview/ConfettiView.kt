@@ -233,9 +233,11 @@ class ConfettiView(context: Context, attributeSet: AttributeSet?, def: Int) : Vi
      * transition effect.
      */
     private val confettiDistanceAnimator by lazy {
-        ValueAnimator.ofFloat(0f, Math.max(width, height).toFloat() / 3f)
+        ValueAnimator.ofFloat(0f, Math.min(width, height).toFloat() /2)
             .apply {
-                duration = 450
+//                repeatMode = ValueAnimator.RESTART
+                repeatCount = ValueAnimator.INFINITE
+                duration = 3000
                 addUpdateListener {
                     animatedConfettiRadius = it.animatedValue as Float
                     invalidate()
@@ -431,6 +433,10 @@ class ConfettiView(context: Context, attributeSet: AttributeSet?, def: Int) : Vi
         shape.radius = getShapeRadius(shape)
 
         shape.draw(canvas)
+
+
+        ///////////////
+        shape.drawConfig.angleDeviation=shape.drawConfig.angleDeviation+0.5f
     }
 
     /**
@@ -511,7 +517,7 @@ class ConfettiView(context: Context, attributeSet: AttributeSet?, def: Int) : Vi
      * Fill local list with random [ConfettiShape]'s.
      */
     private fun generateConfetti() {
-        val count = 35
+        val count = 60
         IntRange(0, count).forEach { index ->
             confettiItems.add(getRandomShape(count, index))
         }
